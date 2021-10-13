@@ -3,10 +3,7 @@ let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 in {
-  environment.systemPackages = [
-    pkgs.python3
-    pkgs.nano
-  ];
+  environment.systemPackages = [ pkgs.python3 pkgs.nano ];
   networking.firewall.enable = false;
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };

@@ -36,4 +36,5 @@
   testScript = ''
     frontend.succeed("true")
   '';
+  arion = { };
 }
