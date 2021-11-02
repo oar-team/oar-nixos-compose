@@ -1,0 +1,63 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1631561581,
+        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixos-compose": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1634199324,
+        "narHash": "sha256-O3Md0KVv5jOMWrv09G6WHbMzQ8CIbnMS7Yyw/9A8I+E=",
+        "ref": "master",
+        "rev": "67af3e9e196e56d72d52ef3e968ba6db8458a933",
+        "revCount": 165,
+        "type": "git",
+        "url": "https://gitlab.inria.fr/orichard/nixos-compose.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.inria.fr/orichard/nixos-compose.git"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1634210774,
+        "narHash": "sha256-GYDb2wFDzDuTA96BDKK/TWqseyvI+1TbOvVpqlq9D0A=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "300226261fe5bcabb070a68c1a837e6938566370",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixos-compose": "nixos-compose",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

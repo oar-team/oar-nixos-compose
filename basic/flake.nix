@@ -1,8 +1,14 @@
 {
-  description = "nixos-compose - composition to infrastructure";
-
-  inputs.NUR.url = "github:nix-community/NUR";
-  inputs.kapack.url = "github:oar-team/nur-kapack";
+  description = "basic oar example";
+  
+  inputs = {
+    #nixpkgs.url = "github:NixOS/nixpkgs/release-21.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    NUR.url = "github:nix-community/NUR";
+    kapack.url = "github:oar-team/nur-kapack";
+    kapack.inputs.nixpkgs.follows = "nixpkgs";
+  };
+  
   outputs = { self, nixpkgs, NUR, kapack }:
     let
       system = "x86_64-linux";
