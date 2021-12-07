@@ -41,7 +41,6 @@ in {
     publicKeyFile = "/etc/pubkey.snakeoil";
   };
 
-  services.sshd.enable = true;
   users.users.root.password = "nixos";
   services.openssh.permitRootLogin = "yes";
 }
