@@ -1,83 +1,49 @@
-{ pkgs, ... }: {
-
-  nodes = let
-    commonConfig = let
-      inherit (import ./ssh-keys.nix pkgs) snakeOilPrivateKey snakeOilPublicKey;
+{ pkgs, modulesPath, ... }: {
+  nodes =
+    let commonConfig = import ./common_config.nix { inherit pkgs modulesPath; };
     in {
-      environment.systemPackages = with pkgs.python3Packages; [pkgs.python3 pkgs.python3Packages.sqlalchemy pkgs.nano pkgs.python3Packages.pip pkgs.bat];
-      networking.firewall.enable = false;
-      users.users.user1 = { isNormalUser = true; };
-      users.users.user2 = { isNormalUser = true; };
+      # frontend = { ... }: {
+      #   imports = [ commonConfig ];
+      #   services.oar.client.enable = true;
+      # };
 
-      environment.etc."privkey.snakeoil" = {
-        mode = "0600";
-        source = snakeOilPrivateKey;
-      };
-      environment.etc."pubkey.snakeoil" = {
-        mode = "0600";
-        source = snakeOilPublicKey;
-      };
-      environment.etc."oar-dbpassword".text = ''
-        # DataBase user name
-        DB_BASE_LOGIN="oar"
-          
-        # DataBase user password
-        DB_BASE_PASSWD="oar"
-
-        # DataBase read only user name
-        DB_BASE_LOGIN_RO="oar_ro"
-
-        # DataBase read only user password
-        DB_BASE_PASSWD_RO="oar_ro" 
-      '';
-      services.oar = {
-        # oar db passwords
-        database = {
-          host = "server";
-          passwordFile = "/etc/oar-dbpassword";
+      server = { ... }: {
+        environment.etc."oar/api-users" = {
+        mode = "0644";
+        text = ''
+          user1:$apr1$yWaXLHPA$CeVYWXBqpPdN78e5FvbY3/
+          user2:$apr1$qMikYseG$VL8nyeSSmxXNe3YDOiCwr1
+        '';
         };
-        server.host = "server";
-        privateKeyFile = "/etc/privkey.snakeoil";
-        publicKeyFile = "/etc/pubkey.snakeoil";
+        imports = [ commonConfig ];
+        #services.oar.server.enable = true;
+        services.oar.dbserver.enable = true;
+        #services.oar.web.enable = true;
+        #services.oar.web.monika.enable = true;
+        #services.oar.web.drawgantt.enable = true;
       };
 
-      services.sshd.enable = true;
-      users.users.root.password = "nixos";
-      services.openssh.permitRootLogin = "yes";
+      # node1 = { ... }: {
+      #   imports = [ commonConfig ];
+      #   services.oar.node = {
+      #     enable = true;
+      #     register = { enable = true; };
+      #   };
+      # };
+
+      # node2 = { ... }: {
+      #    imports = [ commonConfig ];
+      #    services.oar.node = {
+      #      enable = true;
+      #      register = {
+      #        enable = true;
+      #      };
+      #   };
+      # };
+
     };
-  in {
-    # frontend = { ... }: {
-    #   imports = [ commonConfig ];
-    #   services.oar.client.enable = true;
-    # };
-
-    server = { ... }: {
-      imports = [ commonConfig ];
-      services.oar.server.enable = true;
-      services.oar.dbserver.enable = true;
-    };
-
-    # node1 = { ... }: {
-    #   imports = [ commonConfig ];
-    #   services.oar.node = {
-    #     enable = true;
-    #     register = { enable = true; };
-    #   };
-    # };
-
-    # node2 = { ... }: {
-    #   imports = [ commonConfig ];
-    #   services.oar.node = {
-    #     enable = true;
-    #     register = {
-    #       enable = true;
-    #     };
-    #   };
-    # };
-
-  };
 
   testScript = ''
-    frontend.succeed("true")
+    # frontend.succeed("true")
   '';
 }
