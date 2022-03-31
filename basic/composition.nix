@@ -1,6 +1,6 @@
-{ pkgs, modulesPath, ... }: {
+{ pkgs, modulesPath, nur, ... }: {
   nodes =
-    let commonConfig = import ./common_config.nix { inherit pkgs modulesPath; };
+    let commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];
@@ -36,5 +36,4 @@
   testScript = ''
     frontend.succeed("true")
   '';
-  arion = { };
 }

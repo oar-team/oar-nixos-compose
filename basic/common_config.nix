@@ -1,8 +1,10 @@
-{ pkgs, modulesPath }:
+{ pkgs, modulesPath, nur }:
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 in {
+  imports = [ nur.repos.kapack.modules.oar ];
+  
   environment.systemPackages = [ pkgs.python3 pkgs.nano ];
   networking.firewall.enable = false;
   users.users.user1 = { isNormalUser = true; };
