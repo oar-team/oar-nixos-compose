@@ -21,15 +21,15 @@
         };
       };
 
-      # node2 = { ... }: {
-      #   imports = [ commonConfig ];
-      #   services.oar.node = {
-      #     enable = true;
-      #     register = {
-      #       enable = true;
-      #     };
-      #   };
-      # };
+      node2 = { ... }: {
+        imports = [ commonConfig ];
+        services.oar.node = {
+          enable = true;
+          register = {
+            enable = true;
+          };
+        };
+      };
 
     };
 
