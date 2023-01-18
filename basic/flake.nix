@@ -2,11 +2,11 @@
   description = "OAR - basic setup";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/22.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     NUR.url = "github:nix-community/NUR";
-    kapack.url = "github:oar-team/nur-kapack/oar";
+    kapack.url = "github:oar-team/nur-kapack";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
   };
 

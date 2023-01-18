@@ -5,11 +5,10 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar ];
   
-  environment.systemPackages = [ pkgs.python3 pkgs.nano ];
-  networking.firewall.enable = false;
-  users.users.user1 = { isNormalUser = true; };
-  users.users.user2 = { isNormalUser = true; };
+  environment.systemPackages = [ pkgs.python3 pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.nano ];
 
+  nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
+  
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
     source = snakeOilPrivateKey;
@@ -42,7 +41,4 @@ in {
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
   };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
