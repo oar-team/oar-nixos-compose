@@ -1,0 +1,18 @@
+[project]
+
+[options]
+kernel-params = "systemd.unified_cgroup_hierarchy=0"
+nix-flags = "--impure"
+           
+[g5k.options]
+nix-flags = "--impure"
+kernel-params = "systemd.unified_cgroup_hierarchy=0"
+
+[dev2.options]
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/23.05"
+    
+[dev.options]
+nix-flags = "--impure"
+
+[dev.build.nur.repos.kapack.oar]
+src = "/home/auguste/dev/oar/envelope"
