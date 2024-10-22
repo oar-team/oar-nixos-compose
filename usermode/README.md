@@ -7,8 +7,10 @@ OAR's Usermode under Slurm Management
 
 *Limitation* In short only submission of OAR's batch job is supported 
 
-## Helpers command oar-usermode
+## Helper command oar-usermode
+oar-usermode is a simple script to prepare database (only Sqlite upto now). 
 
+```bash
 Options:
 
   -c, --create-db        Create database
@@ -19,6 +21,7 @@ Options:
                          OAR services
   -o, --nb-core INTEGER  Number of cores for each node
   --help                 Show this message and exit.
+```
 
 ## Without Slurm
 
