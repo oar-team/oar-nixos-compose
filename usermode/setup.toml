@@ -1,0 +1,4 @@
+[project]
+    
+[dev.options]
+nix-flags = "--impure --override-input oar-usermode path:/home/auguste/dev/oar/usermode"
