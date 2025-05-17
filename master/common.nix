@@ -37,7 +37,7 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar ];
   # TODO move perl dependency into oar module definition in kapack 
-  environment.systemPackages = with pkgs; [ perl python3 nano vim nur.repos.kapack.oar jq hwloc ];
+  environment.systemPackages = with pkgs; [ python3 vim nur.repos.kapack.oar jq hwloc ];
   
   networking.firewall.enable = false;
 
@@ -93,7 +93,6 @@ in {
     extraConfig = {
       LOG_LEVEL = "3";
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
-      #JOB_RESOURCE_MANAGER_FILE="/etc/oar/job_resource_manager_evolving_nixos.pl";
       #QUOTAS = "yes";
       #QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       #EXTRA_METASCHED = "dyn_rm";
