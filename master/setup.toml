@@ -1,11 +1,7 @@
 [project]
 
-[options]
-kernel-params = "systemd.unified_cgroup_hierarchy=0 SYSTEMD_CGROUP_ENABLE_LEGACY_FORCE=1"
-        
 [dev.options]
-nix-flags = "--impure --override-input kapack git+file:///home/auguste/dev/nur-kapack/master"
-kernel-params = "systemd.unified_cgroup_hierarchy=0 SYSTEMD_CGROUP_ENABLE_LEGACY_FORCE=1"
-    
+nix-flags = "--impure --override-input kapack git+file:///home/auguste/dev/nur-kapack/master --override-input nxc path:/home/auguste/dev/nixos-compose/24.11"
 
-    
+[dev.build.nur.repos.kapack.oar]
+src = "/home/auguste/dev/oar/master"
