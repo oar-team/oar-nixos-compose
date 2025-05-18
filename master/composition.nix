@@ -24,7 +24,15 @@
         
         services.oar.dbserver.enable = true;
 
-
+        environment.etc."oar/api-users" = {
+        mode = "0644";
+        text = ''
+          user1:$apr1$yWaXLHPA$CeVYWXBqpPdN78e5FvbY3/
+          user2:$apr1$qMikYseG$VL8nyeSSmxXNe3YDOiCwr1
+        '';
+        };
+        services.oar.web.enable = true;
+        
         # services.nfs.server.enable = true;
 
         # # Define a mount point at /srv
