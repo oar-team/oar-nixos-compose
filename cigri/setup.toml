@@ -1,0 +1,4 @@
+[project]
+
+[dev.options]
+nix-flags = "--impure --override-input kapack git+file:///home/quentin/dev/nur-kapack/"
