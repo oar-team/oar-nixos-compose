@@ -103,15 +103,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1747599136,
-        "narHash": "sha256-4tHAdyNBDXy+JGFH9k0CSIHnVghMkWBr/Ak3IXNpov4=",
+        "lastModified": 1747723969,
+        "narHash": "sha256-DNfm5mgUVBTIwcYASDEQhgugOjBu+4wlkMaXfF92GZQ=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "c1f8dcc669e87c2179864d03bcced16a0b88d0c1",
+        "rev": "eb9202e2ba5e4c382917b9c8719f77b79d1601be",
         "type": "github"
       },
       "original": {
         "owner": "oar-team",
+        "ref": "update_cigri",
         "repo": "nur-kapack",
         "type": "github"
       }

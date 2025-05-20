@@ -1,140 +1,100 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
-  roles =
-    let
-      commonConfig = import ./common.nix { inherit pkgs modulesPath nur flavour; };
-  scripts = import ./cigri_utils.nix { inherit pkgs; };
-    in {
-      oar-server = { ... }: {
-        imports = [ commonConfig ];
-        services.oar.server.enable = true;
-        services.oar.client.enable = true;
-        
-        services.oar.dbserver.enable = true;
+{ pkgs, modulesPath, nur, helpers, flavour, lib, ... }: {
+  roles = let
+    oarServerName = "oar-server";
+    commonOARConfig = import ./common/common_oar.nix {
+      inherit pkgs modulesPath nur flavour oarServerName;
+    };
+    commonConfig =
+      import ./common/common_config.nix { inherit pkgs modulesPath lib nur; };
 
-        environment.etc."oar/api-users" = {
+    nfsConfig = import ./common/nfs.nix { inherit flavour oarServerName; };
+  in {
+    oar-server = { ... }: {
+      imports = [ commonOARConfig nfsConfig.server commonConfig ];
+      services.oar.server.enable = true;
+      services.oar.client.enable = true;
+      services.oar.dbserver.enable = true;
+
+      environment.etc."oar/api-users" = {
         mode = "0644";
         text = ''
           user1:$apr1$yWaXLHPA$CeVYWXBqpPdN78e5FvbY3/
           user2:$apr1$qMikYseG$VL8nyeSSmxXNe3YDOiCwr1
         '';
+      };
+      services.oar.web.enable = true;
+
+    };
+
+    node = { ... }: {
+      imports = [ commonOARConfig nfsConfig.client commonConfig ];
+      services.oar.node = { enable = true; };
+    };
+
+    cigri = { ... }: {
+      imports = [
+        nur.repos.kapack.modules.cigri
+        nur.repos.kapack.modules.my-startup
+        nfsConfig.client
+        commonConfig
+      ];
+      services.logrotate.enable = false;
+      services.cigri = {
+        dbserver.enable = true;
+        client.enable = true;
+        database = {
+          host = "cigri";
+          passwordFile = ./common/cigri-dbpassword;
         };
-        services.oar.web.enable = true;
-        
-environment.etc = {
-    "cigri_job.sh" = {
-      mode = "0777";
-      text = builtins.readFile ./job.sh;
-    };
-  };
-        # services.nfs.server.enable = true;
+        server = {
+          enable = true;
+          web.enable = true;
+          host = "cigri";
+          logfile = "/tmp/cigri.log";
+        };
+      };
+      networking.hostName = "cigri";
+      # users.users.oar = { isNormalUser = true; };
+      services.my-startup = {
+        enable = true;
+        path = with pkgs; [ nur.repos.kapack.cigri sudo postgresql openssh ];
+        script = ''
+          # Waiting cigri database is ready
+          until pg_isready -h cigri -p 5432 -U postgres
+          do
+              echo "Waiting for postgres"
+                  sleep 0.5;
+          done
 
-        # # Define a mount point at /srv
-        # services.nfs.server.exports = ''
-        # /srv *(rw, no_subtree_check,fsid=0,no_root_squash)
-        # '';
-        # services.nfs.server.createMountPoints = true;
-        
+          until sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw cigri
+          do
+              echo "Waiting for cigri db created"
+              sleep 0.5
+          done
+
+          newcluster cluster_0 http://${oarServerName}/api/ jwt fakeuser fakepasswd "" ${oarServerName} oar3 resource_id 1 ""
+          systemctl restart cigri-server
+
+          # Registering the users
+
+          ## Root
+          export $(ssh ${oarServerName} sudo -u oar oarsub -T)
+          sudo -u oar gridtoken -i 1 -t $OAR_API_TOKEN
+          sudo -u cigri gridtoken -i 1 -t $OAR_API_TOKEN
+
+          ## user1
+          export $(ssh ${oarServerName} sudo -u user1 oarsub -T)
+          sudo -u user1 gridtoken -i 1 -t $OAR_API_TOKEN
+
+          ## user2
+          export $(ssh ${oarServerName} sudo -u user2 oarsub -T)
+          sudo -u user2 gridtoken -i 1 -t $OAR_API_TOKEN
+        '';
       };
 
-      node = { ... }: {
-        imports = [ commonConfig ];
-        services.oar.node = { enable = true; };
-environment.etc = {
-    "cigri_job.sh" = {
-      mode = "0777";
-      text = builtins.readFile ./job.sh;
-    };
-  };
-      };
-
-      cigri = { ... }: {
-          imports = [
-             nur.repos.kapack.modules.cigri
-             nur.repos.kapack.modules.my-startup
-             # commonConfig
-          ];
-          environment.systemPackages = [ scripts.gen_campaign
-    scripts.get_oar_db_dump
-    scripts.qtest
-];
-environment.etc = {
-    "cigri_job.sh" = {
-      mode = "0777";
-      text = builtins.readFile ./job.sh;
     };
   };
 
-          # services.cigri = {
-          #     dbserver.enable = true;
-          #     client.enable = true;
-          #     server.enable = true;
-          #     database.passwordFile = ./cigri-dbpassword;
-          #     database.host = "cigri";
-          # };
-          services.logrotate.enable = false;
-          services.cigri = {
-              dbserver.enable = true;
-              client.enable = true;
-              database = {
-                  host = "cigri";
-                  passwordFile = ./cigri-dbpassword;
-                  # package = nur.repos.kapack.postgresql;
-# package = pkgs.postgresql_9_6;
-              };
-              server = {
-                  enable = true;
-                  web.enable = true;
-                  host = "cigri";
-                  logfile = "/tmp/cigri.log";
-              };
-          };
-          networking.hostName = "cigri";
-networking.firewall.allowedTCPPorts = [ 80 ];
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    permitRootLogin = "yes";
-  };
-
-
-  networking.firewall.enable = false;
-
- users.users = {
-    user1 = { isNormalUser = true; };
-    user2 = { isNormalUser = true; };
-    oar = { isNormalUser = true; };
-    cigri = { isSystemUser = true; };
-  };
-  users.users.oar.group = "oar";
-  users.groups.oar = { };
-
-  users.users.cigri.group = "cigri";
-  users.groups.cigri = { };
-          services.my-startup = {
-              enable = true;
-              path = with pkgs; [ nur.repos.kapack.cigri sudo postgresql ];
-              script = ''
-# Waiting cigri database is ready
-                  until pg_isready -h cigri -p 5432 -U postgres
-                  do
-                      echo "Waiting for postgres"
-                          sleep 0.5;
-                  done
-
-                  until sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw cigri
-                  do
-                      echo "Waiting for cigri db created"
-                      sleep 0.5
-                  done
-
-                  newcluster cluster_0 http://oar-server/api/ jwt fakeuser fakepasswd "" oar-server oar3 resource_id 1 ""
-                  systemctl restart cigri-server
-              '';
-          };
-
-      };
-    };
-  
   ##############################
   # Default number for each role
   rolesDistribution = { node = 1; }; # n1 ... n8

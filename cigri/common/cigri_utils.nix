@@ -6,7 +6,9 @@
     SLEEP_TIME=$2
     FILE_SIZE=$3
 
-    ${pkgs.python3}/bin/python3 ${./generate_campaign.py} $NB_JOBS $SLEEP_TIME $FILE_SIZE $HOME
+    ${pkgs.python3}/bin/python3 ${
+      ./generate_campaign.py
+    } $NB_JOBS $SLEEP_TIME $FILE_SIZE $HOME
   '';
 
   get_oar_db_dump = pkgs.writeScriptBin "dump_oar" ''
@@ -19,7 +21,7 @@
             AND resources.resource_id = assigned_resources.resource_id
       )  to STDOUT with csv"
   '';
-  
+
   qtest = pkgs.writeScriptBin "qtest" ''
     cd /home/user1
     sudo -u user1 gen_campaign 1000 60 0
