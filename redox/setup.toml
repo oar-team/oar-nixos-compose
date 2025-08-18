@@ -1,0 +1,7 @@
+[project]
+
+[dev.options]
+nix-flags = "--impure --override-input kapack git+file:///home/auguste/dev/nur-kapack/oar-redox" # --override-input nxc path:/home/auguste/dev/nixos-compose/24.11"
+
+#[dev.build.nur.repos.kapack.oar]
+#src = "/home/auguste/dev/oar/master"
