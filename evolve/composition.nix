@@ -1,15 +1,11 @@
 { pkgs, modulesPath, nur, helpers, flavour, ... }: {
-  #dockerPorts.frontend = [ "8443:443" "8000:80" ];
   roles =
     let
-      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
+      commonConfig = import ./common.nix { inherit pkgs modulesPath nur flavour; };
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];
-        # services.phpfpm.phpPackage = pkgs.php74;
         services.oar.client.enable = true;
-        #services.oar.web.enable = true;
-        #services.oar.web.drawgantt.enable = true;
       };
       server = { ... }: {
         imports = [ commonConfig ];
@@ -17,6 +13,7 @@
         #services.oar.package = pkgs.oar-with-plugins;
         
         services.oar.dbserver.enable = true;
+        
       };
       node = { ... }: {
         imports = [ commonConfig ];

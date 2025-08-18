@@ -93,7 +93,7 @@ in {
     extraConfig = {
       LOG_LEVEL = "3";
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
-      #JOB_RESOURCE_MANAGER_FILE="/etc/oar/job_resource_manager_evolving_nixos.pl";
+      #JOB_RESOURCE_MANAGER_FILE="/etc/oar/job_resource_manager_systemd_evolving_nixos.pl";
       #QUOTAS = "yes";
       #QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       #EXTRA_METASCHED = "dyn_rm";
