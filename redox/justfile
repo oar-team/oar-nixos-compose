@@ -22,4 +22,3 @@ oarsub NB_NODES="4":
 
 deploy:
     nxc start -m OAR.$OAR_JOB_ID.stdout -W
-

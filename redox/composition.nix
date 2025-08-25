@@ -1,7 +1,7 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
+{ pkgs, lib, modulesPath, nur, helpers, flavour, ... }: {
   roles =
     let
-      commonConfig = import ./common.nix { inherit pkgs modulesPath nur flavour; };
+      commonConfig = import ./common.nix { inherit pkgs lib modulesPath nur flavour; };
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];

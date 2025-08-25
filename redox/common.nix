@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, nur, flavour }:
+{ pkgs, lib, modulesPath, nur, flavour }:
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
@@ -25,7 +25,8 @@ let
             time.sleep(0.25)
 
     if session:
-        resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
+        resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]),
+                           100)
         print("resource created")
     else:
         print("resource creation failed")
@@ -37,8 +38,12 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar ];
   # TODO move perl dependency into oar module definition in kapack 
-  environment.systemPackages = with pkgs; [ python3 vim nur.repos.kapack.oar jq hwloc ];
-  
+  environment.systemPackages = with pkgs; [
+    (python3.withPackages (python-pkgs: with python-pkgs; [
+      nur.repos.kapack.oar
+    ]))
+    vim nur.repos.kapack.oar jq hwloc just ];
+
   networking.firewall.enable = false;
 
   users.users.user1 = { isNormalUser = true; };
@@ -77,6 +82,10 @@ in {
     DB_BASE_PASSWD_RO="oar_ro"
   '';
 
+  programs.bash.shellAliases = {
+    j = "${pkgs.just}/bin/just --justfile /etc/justfile";
+  }; 
+  environment.etc."justfile".text = lib.fileContents ./justfile;
   # environment.etc."oar-quotas.json" = {
   #   text = ''
   #       {
@@ -93,6 +102,10 @@ in {
     extraConfig = {
       LOG_LEVEL = "3";
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
+      METASCHEDULER_MODE = "internal";
+      REDOX_SCHEDULER = "yes";
+      #METASCHEDULER_MODE = "external";
+      #REDOX_SCHEDULER = "no";
       #QUOTAS = "yes";
       #QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       #EXTRA_METASCHED = "dyn_rm";

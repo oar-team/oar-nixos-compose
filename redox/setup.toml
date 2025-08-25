@@ -1,10 +1,11 @@
 [project]
 
 [dev.options]
-nix-flags = "--impure --override-input kapack git+file:///home/auguste/dev/nur-kapack/oar-redox" # --override-input nxc path:/home/auguste/dev/nixos-compose/24.11"
+nix-flags = "--impure --override-input kapack git+file:///home/auguste/dev/nur-kapack/oar-redox"
 
 [dev.build.nur.repos.kapack.oar]
 src = "/home/auguste/dev/oar/redox"
 
+# Will not work (oar use as dep)...
 [dev.build.nur.repos.kapack.oar-scheduler-redox]
 src = "/home/auguste/dev/oar-redox/cgrenner-oar3-rust-scheduler"    
