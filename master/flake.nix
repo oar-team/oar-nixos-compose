@@ -5,7 +5,7 @@
     nxc.url = "gitlab:nixos-compose/nixos-compose/25.05?host=gitlab.inria.fr";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     NUR.url = "github:nix-community/NUR";
-    kapack.url = "github:oar-team/nur-kapack";
+    kapack.url = "github:oar-team/nur-kapack/25.05";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
