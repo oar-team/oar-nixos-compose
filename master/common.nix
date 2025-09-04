@@ -96,6 +96,9 @@ in {
       #QUOTAS = "yes";
       #QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       #EXTRA_METASCHED = "dyn_rm";
+
+      NODE_FILE_DB_FIELD_DISTINCT_VALUES="id";
+      #OAREXEC_DEBUG_MODE="1";
     };
 
     # oar db passwords
