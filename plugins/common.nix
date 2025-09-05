@@ -95,7 +95,7 @@ in {
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
       #QUOTAS = "yes";
       #QUOTAS_CONF_FILE="/etc/oar-quotas.json";
-      #EXTRA_METASCHED = "dyn_rm";
+      EXTRA_METASCHED = "foo";
     };
 
     # oar db passwords

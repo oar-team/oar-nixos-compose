@@ -20,7 +20,7 @@
       server = { ... }: {
         imports = [ commonConfig ];
         services.oar.server.enable = true;
-        #services.oar.package = pkgs.oar-with-plugins;
+        services.oar.package = nur.repos.kapack.oar-with-plugins;
         
         services.oar.dbserver.enable = true;
 
