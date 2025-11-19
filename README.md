@@ -175,7 +175,13 @@ nxc build -f g5k-image --mounted-store-url doozer@nix-datamove
 # On frontend
 cd oar-nixos-compose/master
 oarsub -l nodes=4,walltime=2:0 -t deploy -I
-nxc start -m $OAR_NODEFILE --remote-deployment-info
+nxc start --http-deployment-info --image-store-ssh doozer@nix-datamove -m $OAR_NODEFILE
+```
+## Non-interactive session with remote store (aka the one of remote builder)
+```bash
+# On frontend
+cd oar-nixos-compose/mast
+python execo_script.py --keep-job --image-store-ssh doozer@nix-datamove -j $OAR_JOB_ID
 ```
 
 # Elements for development

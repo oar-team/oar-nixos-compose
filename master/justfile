@@ -1,25 +1,33 @@
 DEFAULT_G5K_SITE := "grenoble"
 export JUST_DIR := justfile_directory()
 
-alias r := rsync_g5k
-alias cpj := g5k_scp_justfile
+alias r := rsync-g5k
+alias cpj := g5k-scp-justfile
 
 default:
     @just --list
 
-g5k_scp_justfile SITE=DEFAULT_G5K_SITE:
+g5k-scp-justfile SITE=DEFAULT_G5K_SITE:
     scp justfile {{ SITE }}.g5k:oar-nixos-compose/$(basename {{ JUST_DIR }})
 
 # Rsync current worktree to G5K
-rsync_g5k SITE=DEFAULT_G5K_SITE:
+rsync-g5k SITE=DEFAULT_G5K_SITE:
     #!/usr/bin/env bash
     set -euxo pipefail
     cd ../../
     rsync -avz oar-nixos-compose --delete --exclude '\#*' --exclude '*/build' --exclude '*/deploy' --exclude '*/artifact' --exclude  '*~' {{ SITE }}.g5k:
-#oarsub    
-oarsub NB_NODES="4":
-    export $(oarsub -l nodes=NB_NODES,walltime=1:0:0 "$(nxc helper g5k_script) 1h" | grep OAR_JOB_ID)
+#oarsub
+g5k-oarsub-nfs-store NB_NODES="4":
+    export $(oarsub -l nodes={{ NB_NODES }},walltime=1:0:0 "$(nxc helper g5k_script) 1h" | grep OAR_JOB_ID)
 
 deploy:
     nxc start -m OAR.$OAR_JOB_ID.stdout -W
 
+g5k-build-local FLAVOUR="g5k-nfs-store":
+    nxc build -f {{ FLAVOUR }}
+
+g5k-copy-image:
+    #!/usr/bin/env bash
+    image_path=$(jq -r ".all.image" "build/composition::g5k-image")
+    # nix copy --from ssh://doozer@nix-datamove /nix/store/f6qc83aqh7kk9xaisj2gz765ww16gdvf-tarball/tarball/all-compositions.tar.xz --to file:///tmp/
+    scp doozer@nix-datamove:$image_path .
