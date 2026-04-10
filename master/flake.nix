@@ -2,34 +2,48 @@
   description = "OAR - from master";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nxc.url = "gitlab:nixos-compose/nixos-compose/25.05?host=gitlab.inria.fr";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
-    NUR.url = "github:nix-community/NUR";
-    kapack.url = "github:oar-team/nur-kapack/25.05";
+    kapack.url = "gitlab:kairns/kapack?host=gricad-gitlab.univ-grenoble-alpes.fr";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
-
-  outputs = { self, nixpkgs, nxc, NUR, kapack, nixpkgs-master}:
+  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, ... }:
     let
       system = "x86_64-linux";
-      
+      pkgs = nixpkgs.legacyPackages.${system};
+      lib = pkgs.lib;
     in {
       packages.${system} = nxc.lib.compose {
-        inherit nixpkgs system NUR;
-        repoOverrides = { inherit kapack; };
+        inherit nixpkgs system;
         composition = ./composition.nix;
         setup = ./setup.toml;
-        
+        # Add all kapack modules
+        extraConfigurations = builtins.attrValues kapack.nixosModules;
         overlays = [
-           (self: super: {
-              hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
+           ( _: _: {
+             hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
            })
+           (_: _: kapack.packages.${system})
         ];
-        
       };
-      
-      devShell.${system} = nxc.devShells.${system}.nxcShell;
+      formatter.${system} = pkgs.writeShellScriptBin "formatter" ''
+        set -eoux pipefail
+        shopt -s globstar
+        ${lib.getExe pkgs.deno} fmt README.md
+        ${lib.getExe pkgs.nixpkgs-fmt} .
+        ${lib.getExe pkgs.just} --fmt --unstable
+      '';
+
+      devShell.${system} = pkgs.mkShell {
+        packages = with pkgs; [
+          nushell
+          yq-go
+          qemu_kvm
+          vde2
+          tmux
+          nxc.defaultPackage.${system}
+        ];
+      };
     };
 }
-

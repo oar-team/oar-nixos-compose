@@ -1,10 +1,10 @@
-{ pkgs, modulesPath, nur, flavour }:
+{ pkgs, modulesPath, flavour }:
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
-    libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
+    libraries = [ pkgs.oar ]; } ''
     from oar.lib.tools import get_date
     from oar.lib.resource_handling import resources_creation
     from oar.lib.globals import init_and_get_session
@@ -35,10 +35,10 @@ let
   # npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
 
 in {
-  imports = [ nur.repos.kapack.modules.oar ];
-  # TODO move perl dependency into oar module definition in kapack 
-  environment.systemPackages = with pkgs; [ python3 vim nur.repos.kapack.oar jq hwloc ];
-  
+
+  # TODO move perl dependency into oar module definition in kapack
+  environment.systemPackages = with pkgs; [ python3 vim oar jq hwloc python3Packages.clustershell ];
+
   networking.firewall.enable = false;
 
   users.users.user1 = { isNormalUser = true; };

@@ -17,8 +17,8 @@ rsync-g5k SITE=DEFAULT_G5K_SITE:
     cd ../../
     rsync -avz oar-nixos-compose --delete --exclude '\#*' --exclude '*/build' --exclude '*/deploy' --exclude '*/artifact' --exclude  '*~' {{ SITE }}.g5k:
 #oarsub
-g5k-oarsub-nfs-store NB_NODES="4":
-    export $(oarsub -l nodes={{ NB_NODES }},walltime=1:0:0 "$(nxc helper g5k_script) 1h" | grep OAR_JOB_ID)
+g5k-oarsub-nfs-store NB_NODES="4" ARGS="":
+    export $(oarsub -l nodes={{ NB_NODES }},walltime=1:0:0 {{ ARGS }} "$(nxc helper g5k_script) 1h" | grep OAR_JOB_ID)
 
 deploy:
     nxc start -m OAR.$OAR_JOB_ID.stdout -W
