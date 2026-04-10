@@ -76,11 +76,11 @@
       },
       "locked": {
         "host": "gricad-gitlab.univ-grenoble-alpes.fr",
-        "lastModified": 1775210267,
-        "narHash": "sha256-VXDhYmdTh9Cct+OgYfSVeTmuANMnvnrqGVyXgBNfLlM=",
+        "lastModified": 1775769156,
+        "narHash": "sha256-BBSg3yIt1yvbSlsZ0bAYKMmr3A3TvarHwwhxJsjzZy4=",
         "owner": "kairns",
         "repo": "kapack",
-        "rev": "5c57d88ca2e02e2dff75ff4660ba90b3d7fb09b7",
+        "rev": "79dc06d0aea12559cd13d4cb0c8b9279f49672b3",
         "type": "gitlab"
       },
       "original": {
@@ -131,11 +131,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1775637762,
-        "narHash": "sha256-/jInQytjt9yR3x7jbyUzr8NSeanmIVonDRFHdZu685s=",
+        "lastModified": 1775826826,
+        "narHash": "sha256-m4+N++F8DSoI9Hv0No6JAYHfDyH9YePZN6PFv3Yg1cE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "381568d8f1f567c8511f4e5f7be868b69929ec8e",
+        "rev": "075a836cc042f88ee752cadb9aafebbb4422be57",
         "type": "github"
       },
       "original": {
