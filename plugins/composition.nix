@@ -1,7 +1,7 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
+{ pkgs, modulesPath, helpers, flavour, ... }: {
   roles =
     let
-      commonConfig = import ./common.nix { inherit pkgs modulesPath nur flavour; };
+      commonConfig = import ./common.nix { inherit pkgs modulesPath flavour; };
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];
@@ -20,7 +20,7 @@
       server = { ... }: {
         imports = [ commonConfig ];
         services.oar.server.enable = true;
-        services.oar.package = nur.repos.kapack.oar-with-plugins;
+        services.oar.plugins = [ pkgs.oar-plugins ];
         
         services.oar.dbserver.enable = true;
 
