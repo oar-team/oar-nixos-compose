@@ -1,0 +1,66 @@
+DEFAULT_G5K_SITE := "grenoble"
+export JUST_DIR := justfile_directory()
+
+default:
+    @just --list
+
+# ---- Folding config ----
+
+# Edit setup.toml with N (vnodes) and K (factor), then rebuild for FLAVOUR.
+configure NB_VNODES FACTOR FLAVOUR="vm":
+    @sed -i "s/^nb_vnodes\s*=.*/nb_vnodes = {{ NB_VNODES }}/" setup.toml
+    @sed -i "s/^factor\s*=.*/factor = {{ FACTOR }}/" setup.toml
+    @echo "setup.toml -> nb_vnodes={{ NB_VNODES }}, factor={{ FACTOR }}"
+    @echo "Rebuild ({{ FLAVOUR }})..."
+    nxc build -f {{ FLAVOUR }}
+
+# ---- Local (docker / vm) ----
+build-docker:
+    nxc build -f docker
+
+build-vm:
+    nxc build -f vm
+
+# Local deployment: reads setup.toml and starts ceil(N/K) VMs.
+start FLAVOUR="docker":
+    python3 execo_script.py --flavour {{ FLAVOUR }}
+
+# Full shortcut: configure + build + start.
+deploy NB_VNODES="4" FACTOR="1" FLAVOUR="docker":
+    @just configure {{ NB_VNODES }} {{ FACTOR }} {{ FLAVOUR }}
+    @just start {{ FLAVOUR }}
+
+connect ROLE="frontend":
+    nxc connect {{ ROLE }}
+
+stop:
+    nxc stop
+
+# ---- Grid'5000 ----
+g5k-build:
+    nxc build -f g5k-image
+
+# For G5K deployment, build remotely (see README) then call this without rebuilding.
+g5k-start SITE=DEFAULT_G5K_SITE CLUSTER="dahu" WALLTIME="1":
+    python3 execo_script.py \
+        --flavour g5k-image \
+        --nxc_build_file ./build/composition::g5k-image \
+        --site {{ SITE }} \
+        --cluster {{ CLUSTER }} \
+        --walltime {{ WALLTIME }}
+
+# Full shortcut: configure + build + g5k-start.
+g5k-deploy NB_VNODES="8" FACTOR="4" SITE=DEFAULT_G5K_SITE CLUSTER="dahu" WALLTIME="1":
+    @just configure {{ NB_VNODES }} {{ FACTOR }} g5k-image
+    @just g5k-start {{ SITE }} {{ CLUSTER }} {{ WALLTIME }}
+
+# Rsync the current worktree to a G5K frontend.
+rsync-g5k SITE=DEFAULT_G5K_SITE:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    cd ../
+    rsync -avz $(basename $JUST_DIR) --delete \
+        --exclude '\#*' --exclude '*/build' --exclude '*/deploy' \
+        --exclude '*/artifact' --exclude '*~' \
+        --exclude '*/MyEngine*' \
+        {{ SITE }}.g5k:
