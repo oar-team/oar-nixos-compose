@@ -1,0 +1,16 @@
+[project]
+
+
+[dev.options]
+#nix-flags = "--impure --override-input kapack git+file:/home/auguste/dev/kapack/master"
+# --override-input kapack git+file:/home/auguste/dev/nur-kapack/oar-redox"
+# # --override-input kapack git+file:/home/auguste/dev/kapack/master"
+# --override-input nxc path:/home/auguste/dev/nixos-compose/24.11"
+nix-flags = "--impure --override-input kapack path:/home/yannmouahe/Lig/Dev/kapack"
+
+[params]
+# nb_vnodes : number of vnodes seen by OAR (N)
+# factor    : vnodes per physical machine (k, 1 = no folding)
+# M = ceil(N/k) : number of machines deployed
+nb_vnodes = 1000
+factor = 100
