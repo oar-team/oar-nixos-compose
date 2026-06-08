@@ -11,7 +11,7 @@ pkgs.writers.writePython3Bin "add_resources"
   from sqlalchemy import text
   from oar.lib.tools import get_date
   from oar.lib.globals import init_and_get_session
-  from oar.lib.resource_handling import resources_creation
+  from oar.lib.resource_handling import resources_creation_folding
 
   N = ${toString N}
   k = ${toString k}

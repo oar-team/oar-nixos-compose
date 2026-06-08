@@ -1,10 +1,10 @@
 {
-  description = "OAR + NFS /users + folding (docker, vm, g5k-image)";
+  description = "OAR + folding (docker, vm, g5k-image)";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
-    kapack.url = "gitlab:kairns/kapack?host=gricad-gitlab.univ-grenoble-alpes.fr&ref=folding";
+    kapack.url = "gitlab:kairns/kapack?host=gricad-gitlab.univ-grenoble-alpes.fr";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };

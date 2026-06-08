@@ -16,11 +16,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771430673,
-        "narHash": "sha256-wX8ynjXXRTixcs1xhhxyChpI4ngOt+Bg1p6o3ayc29U=",
+        "lastModified": 1776493638,
+        "narHash": "sha256-JIyxTZyyqv61YQupd1Z8RldwSHf4hYBggBfNGg52Kjo=",
         "owner": "stepbrobd",
         "repo": "autopilot",
-        "rev": "e75e89136cf1792c0cbf1fcc7cc7dc027702ecc2",
+        "rev": "c4dab44fd9401dbe406f8cd7c6b9209f2fb4b988",
         "type": "github"
       },
       "original": {
@@ -76,17 +76,16 @@
       },
       "locked": {
         "host": "gricad-gitlab.univ-grenoble-alpes.fr",
-        "lastModified": 1780415009,
-        "narHash": "sha256-i3paBQ36EjHwXxv65w/eFGv4ZFF3Fm+yCvnW7o+bjyk=",
+        "lastModified": 1779872287,
+        "narHash": "sha256-tSJSWW4DeIuddHgOvcMSeB3VHa9NKpDbR4gg59+lVDs=",
         "owner": "kairns",
         "repo": "kapack",
-        "rev": "141899c0dd9b61e885bc5217787c0ba393865e3d",
+        "rev": "900e1c044ccf77c747375fabceb0babd0c13483b",
         "type": "gitlab"
       },
       "original": {
         "host": "gricad-gitlab.univ-grenoble-alpes.fr",
         "owner": "kairns",
-        "ref": "folding",
         "repo": "kapack",
         "type": "gitlab"
       }
@@ -132,11 +131,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1780908310,
-        "narHash": "sha256-g10GYpUlVTTOtdQfQyXosljKUCLKniTyZaPDVCLqJoU=",
+        "lastModified": 1780910358,
+        "narHash": "sha256-kjdbxCtTjj4e5oVaDVTeBbSClUBawsTPMllmpJRAd3k=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d93b7a1a3075755d054e1dd8f3974ba3c31e4793",
+        "rev": "db43fdcd9e52735ffe065bef5e28c6778a86e905",
         "type": "github"
       },
       "original": {
@@ -177,11 +176,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760948891,
-        "narHash": "sha256-TmWcdiUUaWk8J4lpjzu4gCGxWY6/Ok7mOK4fIFfBuU4=",
+        "lastModified": 1775087534,
+        "narHash": "sha256-91qqW8lhL7TLwgQWijoGBbiD4t7/q75KTi8NxjVmSmA=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "864599284fc7c0ba6357ed89ed5e2cd5040f0c04",
+        "rev": "3107b77cd68437b9a76194f0f7f9c55f2329ca5b",
         "type": "github"
       },
       "original": {

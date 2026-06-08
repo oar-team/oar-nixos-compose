@@ -10,8 +10,8 @@ physical compute node is split into `k` vnodes; OAR schedules them as if they
 were independent nodes.
 
 - The `server` and `frontend` roles each get a dedicated machine.
-- The `node` role is deployed `M = ⌈N/k⌉` times. Each physical node then
-  exposes `k` vnodes, for a total of `N` virtual nodes.
+- The `node` role is deployed `M = ⌈N/k⌉` times. Each physical node then exposes
+  `k` vnodes, for a total of `N` virtual nodes.
 - Each vnode gets a distinct `cpuset`, so jobs sharing a physical node run in
   separate cgroups and never collide.
 
@@ -21,18 +21,19 @@ The vnode multiplication happens in the OAR database, set up at boot by
 
 ## Parameters (setup.toml)
 
-| Param         | Description                            |
-| ------------- | -------------------------------------- |
-| `nb_vnodes`   | **N**: number of vnodes seen by OAR    |
-| `factor`      | **k**: vnodes per physical machine     |
-| **M = ⌈N/k⌉** | number of physical machines deployed   |
+| Param         | Description                          |
+| ------------- | ------------------------------------ |
+| `nb_vnodes`   | **N**: number of vnodes seen by OAR  |
+| `factor`      | **k**: vnodes per physical machine   |
+| **M = ⌈N/k⌉** | number of physical machines deployed |
 
-N and k are **build-time** parameters. To change them, edit `setup.toml` (or
-use `just configure N K FLAVOUR`) and rebuild.
+N and k are **build-time** parameters. To change them, edit `setup.toml` (or use
+`just configure N K FLAVOUR`) and rebuild.
 
 ## Supported flavours
 
-- **vm**: local testing. Works fully, including concurrent jobs on a folded node.
+- **vm**: local testing. Works fully, including concurrent jobs on a folded
+  node.
 - **g5k-image**: real bare-metal runs on Grid'5000. Works fully.
 - **docker**: **not supported.** Use vm locally instead.
 
@@ -68,11 +69,10 @@ just g5k-deploy N K            # configure + build + reserve + deploy
 
 ### Remote build with remote-store-address (recommended on G5K)
 
-On G5K the local Nix store is often too small or too slow, so the image is
-built into a remote store (`<remote-store-address>`). In that case the build must
-be run **outside** `nix develop` (the dev shell breaks the flake evaluation),
-and the deployment passes `--image-store-ssh` so it knows where to fetch the
-image.
+On G5K the local Nix store is often too small or too slow, so the image is built
+into a remote store (`<remote-store-address>`). In that case the build must be
+run **outside** `nix develop` (the dev shell breaks the flake evaluation), and
+the deployment passes `--image-store-ssh` so it knows where to fetch the image.
 
 ```bash
 # On a reserved node (or the frontend):
@@ -91,11 +91,10 @@ nix develop
 just g5k-start            # reserves + deploys using the remote-built image
 ```
 
-modifiy `just g5k-start` to passes `--image-store-ssh <remote-store-address>` as argument, so it
-fetches the image from the remote store.
+modifiy `just g5k-start` to passes `--image-store-ssh <remote-store-address>` as
+argument, so it fetches the image from the remote store.
 
-Once deployed, execo prints the frontend address and waits. In another
-terminal:
+Once deployed, execo prints the frontend address and waits. In another terminal:
 
 ```bash
 ssh root@<frontend_address>

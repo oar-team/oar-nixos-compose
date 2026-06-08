@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, flavour, setup, N, k, M}:
+{ pkgs, modulesPath, flavour, setup, N, k, M }:
 
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
