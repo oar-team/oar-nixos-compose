@@ -34,7 +34,7 @@ pkgs.writers.writePython3Bin "add_resources"
   # nb_core = number of physical cores, use to set right cpuset
   # With vfactor=k, the number of vnodes per node
   num_cores = int(sys.argv[1]) if len(sys.argv) > 1 else 4
-  resources_creation(session, "node", M, nb_core=num_cores, vfactor=k)
+  resources_creation_folding(session, "node", M, nb_core=num_cores, vfactor=k)
 
   # vnodes = resource_id (1..N), raw SQL because the column is dynamic.
   session.execute(text("UPDATE resources SET vnodes = resource_id::text"))
