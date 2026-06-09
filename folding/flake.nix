@@ -20,7 +20,9 @@
         composition = ./composition.nix;
         setup = ./setup.toml;
         # Add all kapack modules (services.oar, ...)
-        extraConfigurations = builtins.attrValues kapack.nixosModules;
+        extraConfigurations = builtins.attrValues kapack.nixosModules ++ [
+          { boot.initrd.systemd.enable = lib.mkForce false; }
+        ];
         overlays = [
           (_: _: {
             hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
