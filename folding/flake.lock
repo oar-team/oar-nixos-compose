@@ -75,19 +75,18 @@
         "systems": "systems"
       },
       "locked": {
-        "host": "gricad-gitlab.univ-grenoble-alpes.fr",
-        "lastModified": 1780916154,
-        "narHash": "sha256-xmVsgvQn+vHK9VCqFlWoszd1+7VbaJGxYIggrZO7GGk=",
-        "owner": "kairns",
-        "repo": "kapack",
-        "rev": "f72dd3c2b19564ecbef7f9205a23dabe6934d4ea",
-        "type": "gitlab"
+        "lastModified": 1791288071,
+        "narHash": "sha256-6rjyPQPBV5P2EGjyreNBhKD6uFd46pGemAqdCZWJY6c=",
+        "ref": "master",
+        "rev": "2c1f1bc16b2cbdea66bcb5743849df0651716096",
+        "revCount": 554,
+        "type": "git",
+        "url": "https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git"
       },
       "original": {
-        "host": "gricad-gitlab.univ-grenoble-alpes.fr",
-        "owner": "kairns",
-        "repo": "kapack",
-        "type": "gitlab"
+        "ref": "master",
+        "type": "git",
+        "url": "https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git"
       }
     },
     "kapack_2": {
@@ -131,11 +130,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1781018945,
-        "narHash": "sha256-FLgYaOXr8In0kEIoAEi/u2tRiPPwpUEX57xVKTQ7ePg=",
+        "lastModified": 1791290543,
+        "narHash": "sha256-nUG3DxCSFc2UbMRI4O8xdzkxoBUg4tAgmAJW7/EFjcI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fefa3ee5f1cdb26177f55fd702f1acd0b48c0d06",
+        "rev": "158e6b8930ecbf4834a2d44e99fd6425fba899ce",
         "type": "github"
       },
       "original": {
@@ -168,6 +167,23 @@
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       }
     },
+    "oar": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791278529,
+        "narHash": "sha256-PuoEp4+foDmsoD9zowwRI1LAxaqNdPG4g80b7cO08h4=",
+        "owner": "oar-team",
+        "repo": "oar3",
+        "rev": "4099264a160cb960acc0280374925347cbf58180",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oar-team",
+        "ref": "oarwalltime",
+        "repo": "oar3",
+        "type": "github"
+      }
+    },
     "parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -194,7 +210,8 @@
         "kapack": "kapack",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
-        "nxc": "nxc"
+        "nxc": "nxc",
+        "oar": "oar"
       }
     },
     "systems": {

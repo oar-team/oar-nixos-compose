@@ -1,14 +1,20 @@
 {
-  description = "OAR + folding (docker, vm, g5k-image)";
+  description = "OAR + folding ";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
-    kapack.url = "gitlab:kairns/kapack?host=gricad-gitlab.univ-grenoble-alpes.fr";
+    kapack.url = "git+https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git?ref=master";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
+
+    oar = {
+      url = "github:oar-team/oar3/oarwalltime";
+      flake = false;
+    };
+
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
-  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, ... }:
+  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, oar, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -28,6 +34,12 @@
             hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
           })
           (_: _: kapack.packages.${system})
+          (_: prev: {
+            oar = prev.oar.overridePythonAttrs (_: {
+              version = "3.0.4-dev1";
+              src = oar;
+            });
+          })
         ];
       };
 

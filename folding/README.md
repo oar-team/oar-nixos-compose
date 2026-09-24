@@ -1,7 +1,7 @@
 # folding
 
 An OAR cluster with **folding**: OAR sees `N` distinct logical vnodes, deployed
-on `M = ⌈N/k⌉` physical machines.
+on `M = N/k` physical machines (N must be a multiple of k).
 
 ## Concept
 
@@ -10,10 +10,10 @@ physical compute node is split into `k` vnodes; OAR schedules them as if they
 were independent nodes.
 
 - The `server` and `frontend` roles each get a dedicated machine.
-- The `node` role is deployed `M = ⌈N/k⌉` times. Each physical node then exposes
+- The `node` role is deployed `M = N/k` times. Each physical node then exposes
   `k` vnodes, for a total of `N` virtual nodes.
-- Each vnode gets a distinct `cpuset`, so jobs sharing a physical node run in
-  separate cgroups and never collide.
+- Each job runs in its own cgroup. Vnodes of a node get distinct `cpuset`s as
+  long as k does not exceed its core count; beyond, vnodes share cores.
 
 Folding is transparent to nixos-compose: it just sees a flat list of `M` nodes.
 The vnode multiplication happens in the OAR database, set up at boot by
@@ -25,9 +25,10 @@ The vnode multiplication happens in the OAR database, set up at boot by
 | ------------- | ------------------------------------ |
 | `nb_vnodes`   | **N**: number of vnodes seen by OAR  |
 | `factor`      | **k**: vnodes per physical machine   |
-| **M = ⌈N/k⌉** | number of physical machines deployed |
+| **M = N/k**   | number of physical machines deployed |
 
-N and k are **build-time** parameters. To change them, edit `setup.toml` (or use
+N and k are **build-time** parameters, N must be a multiple of k (the build
+fails otherwise). To change them, edit `setup.toml` (or use
 `just configure N K FLAVOUR`) and rebuild.
 
 ## Supported flavours
@@ -35,7 +36,11 @@ N and k are **build-time** parameters. To change them, edit `setup.toml` (or use
 - **vm**: local testing. Works fully, including concurrent jobs on a folded
   node.
 - **g5k-image**: real bare-metal runs on Grid'5000. Works fully.
-- **docker**: **not supported.** Use vm locally instead.
+- **docker**: local testing. Works fully.
+
+All flavours require an OAR3 version with cgroup v2 support (fixed
+`job_resource_manager_systemd_nixos.pl`, `oarsh` and `oarsh_shell`); older
+versions fail on recent kernels and in docker.
 
 ## Local usage (vm/docker)
 
