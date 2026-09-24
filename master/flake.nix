@@ -4,7 +4,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
-    kapack.url = "gitlab:kairns/kapack?host=gricad-gitlab.univ-grenoble-alpes.fr";
+    kapack.url = "git+https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git?ref=master";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
@@ -19,7 +19,9 @@
         composition = ./composition.nix;
         setup = ./setup.toml;
         # Add all kapack modules
-        extraConfigurations = builtins.attrValues kapack.nixosModules;
+        extraConfigurations = builtins.attrValues kapack.nixosModules ++ [
+          { boot.initrd.systemd.enable = lib.mkForce false; }
+        ];
         overlays = [
            ( _: _: {
              hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
