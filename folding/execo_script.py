@@ -17,6 +17,7 @@ class MyEngine(Engine):
     def __init__(self):
         super(MyEngine, self).__init__()
         self.oar_job_id = None
+        self.site = None
         parser = self.args_parser
 
         parser.add_argument(
@@ -104,12 +105,14 @@ class MyEngine(Engine):
                     nb_physical_nodes, site, cluster, "deploy", walltime=walltime_hours * 60 * 60
                 )
                 self.oar_job_id, site = oar_job[0]
+                self.site = site
                 if self.oar_job_id is None:
                     logger.error("OAR reservation failed")
                     sys.exit(1)
                 wait_oar_job_start(self.oar_job_id, site)
             else:
                 self.oar_job_id = self.args.job_id
+                self.site = site
 
             logger.info("Deploying ...")
             nodes, roles = get_oar_job_nodes_nxc(
@@ -141,7 +144,7 @@ class MyEngine(Engine):
         finally:
             if self.oar_job_id is not None and not self.args.keep_job:
                 logger.info(f"Giving back the resources (OAR job ID {self.oar_job_id})")
-                oardel([(self.oar_job_id, "site")])
+                oardel([(self.oar_job_id, site)])
 
 
 class FailedProcessError(Exception):
@@ -191,6 +194,6 @@ if __name__ == "__main__":
         if ENGINE.oar_job_id is not None:
             try:
                 from execo_g5k import oardel
-                oardel([(ENGINE.oar_job_id, None)])
+                oardel([(ENGINE.oar_job_id, ENGINE.site)])
             except ImportError:
                 pass
