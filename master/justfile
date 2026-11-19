@@ -28,6 +28,6 @@ g5k-build-local FLAVOUR="g5k-nfs-store":
 
 g5k-copy-image:
     #!/usr/bin/env bash
-    image_path=$(jq -r ".all.image" "build/composition::g5k-image")
+    image_path=$(jq -r ".all.image" "build/composition::g5k-image.json")
     # nix copy --from ssh://doozer@nix-datamove /nix/store/f6qc83aqh7kk9xaisj2gz765ww16gdvf-tarball/tarball/all-compositions.tar.xz --to file:///tmp/
     scp doozer@nix-datamove:$image_path .

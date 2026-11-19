@@ -44,7 +44,7 @@ g5k-build:
 g5k-start SITE=DEFAULT_G5K_SITE CLUSTER="dahu" WALLTIME="1":
     python3 execo_script.py \
         --flavour g5k-image \
-        --nxc_build_file ./build/composition::g5k-image \
+        --nxc_build_file ./build/composition::g5k-image.json \
         --site {{ SITE }} \
         --cluster {{ CLUSTER }} \
         --walltime {{ WALLTIME }}
