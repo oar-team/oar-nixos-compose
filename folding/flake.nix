@@ -1,44 +1,34 @@
 {
   description = "OAR + folding ";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=main";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     kapack.url = "git+https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git?ref=master";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
 
-    oar = {
-      url = "github:oar-team/oar3/oarwalltime";
-      flake = false;
-    };
-
     nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
-  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, oar, ... }:
+  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       lib = pkgs.lib;
-    in
-    {
+    in {
       packages.${system} = nxc.lib.compose {
         inherit nixpkgs system;
         composition = ./composition.nix;
         setup = ./setup.toml;
-        # Add all kapack modules (services.oar, ...)
-        extraConfigurations = builtins.attrValues kapack.nixosModules ++ [
-          { boot.initrd.systemd.enable = lib.mkForce false; }
+        extraConfigurations = [
+          kapack.nixosModules.oar
         ];
         overlays = [
           (_: _: {
             hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
           })
           (_: _: kapack.packages.${system})
-          (_: prev: {
-            oar = prev.oar.overridePythonAttrs (_: {
-              version = "3.0.4-dev1";
-              src = oar;
-            });
+          (final: _: {
+            oar = final.callPackage "${kapack}/pkgs/oar-cgroupv2" { };
           })
         ];
       };

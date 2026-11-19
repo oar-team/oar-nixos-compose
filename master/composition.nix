@@ -33,6 +33,9 @@
         };
         services.oar.web.enable = true;
 
+        #services.oar.web.drawgantt.enable = true;
+        #environment.systemPackages = [ pkgs.postgresql ];
+
         # services.nfs.server.enable = true;
 
         # # Define a mount point at /srv

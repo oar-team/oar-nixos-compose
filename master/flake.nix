@@ -1,8 +1,8 @@
 {
   description = "OAR - from master";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=main";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     kapack.url = "git+https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git?ref=master";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
@@ -19,14 +19,17 @@
         composition = ./composition.nix;
         setup = ./setup.toml;
         # Add all kapack modules
-        extraConfigurations = builtins.attrValues kapack.nixosModules ++ [
-          { boot.initrd.systemd.enable = lib.mkForce false; }
+        extraConfigurations = [
+          kapack.nixosModules.oar
         ];
         overlays = [
-           ( _: _: {
-             hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
-           })
-           (_: _: kapack.packages.${system})
+          ( _: _: {
+            hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
+          })
+          (_: _: kapack.packages.${system})
+          (final: _: {
+            oar = final.callPackage "${kapack}/pkgs/oar-cgroupv2" { };
+          })
         ];
       };
       formatter.${system} = pkgs.writeShellScriptBin "formatter" ''
