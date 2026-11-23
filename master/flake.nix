@@ -2,13 +2,12 @@
   description = "OAR - from master";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=main";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=26.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     kapack.url = "git+https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git?ref=master";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-master.url = "github:NixOS/nixpkgs";
   };
-  outputs = { nxc, nixpkgs, kapack, nixpkgs-master, ... }:
+  outputs = { nxc, nixpkgs, kapack, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -23,12 +22,9 @@
           kapack.nixosModules.oar
         ];
         overlays = [
-          ( _: _: {
-            hwloc = nixpkgs-master.legacyPackages.${system}.hwloc;
-          })
           (_: _: kapack.packages.${system})
           (final: _: {
-            oar = final.callPackage "${kapack}/pkgs/oar-cgroupv2" { };
+            oar = final.callPackage "${kapack}/pkgs/oar-master" { };
           })
         ];
       };

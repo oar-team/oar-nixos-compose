@@ -16,6 +16,8 @@ To facilitate their testing and development and ensure their reproducibility, we
 | Directory                    | Description      | Status     | CI@Grid5000 |
 |------------------------------|-------------------|-----------|------------------|
 | [master](master/README.md)   | follows the [OAR's master branch](https://https://github.com/oar-team/oar3)| maintained | TODO             |
+| [stable](stable)   | follows the latest release of [OAR's master branch](https://https://github.com/oar-team/oar3)| maintained | TODO             |
+| [folding](folding)   | implement virtual nodes concept (vnodes) [readme](folding/README.md)| maintained | TODO             |
 | [xxx](xxx/README.md)         |                   | (WIP)     | -                |
 
 # Requirements for local use install

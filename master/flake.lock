@@ -89,11 +89,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1795078956,
-        "narHash": "sha256-HVlkALJjIJSFLC1hLoZJzeDfvmSzoHVnHKBhDW01z0E=",
+        "lastModified": 1795447865,
+        "narHash": "sha256-iSeaTqeOiNBMG6ZMkXgUd6lW4dck4EUNcT/zM+mSFa8=",
         "ref": "master",
-        "rev": "fd44c616e4ed9ae33a373723a5f427a65a69e601",
-        "revCount": 590,
+        "rev": "6005f2649ae4ca2e2231ae3b5349f556555d9e5d",
+        "revCount": 591,
         "type": "git",
         "url": "https://gricad-gitlab.univ-grenoble-alpes.fr/kairns/kapack.git"
       },
@@ -129,31 +129,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1794872590,
-        "narHash": "sha256-E+XLAfnC7+bdr4qlEgRv6cdGmiqTU5oeFNKCha7epqQ=",
+        "lastModified": 1795370043,
+        "narHash": "sha256-s/0jq8usZtLVOolYBwmyUmd3JsfAu7w3FU+a0dgMqSY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f68407657ad294471eb4b2e65d193df26edf729f",
+        "rev": "0dc498bfe49baeb18b0f9891e800b53bb2603193",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "ref": "nixos-26.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1795081731,
-        "narHash": "sha256-07kVARpqZAVhYPH0QeQT+3oCM797B3FYdXPo1HV868s=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "1370bb357dec5432203efbd7683306628eb34fdb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -170,14 +155,14 @@
       "locked": {
         "lastModified": 1794823071,
         "narHash": "sha256-UpDmuPOEAG1gFaZVY9pExkmA8HJDUmb5+tJTPG3zCsI=",
-        "ref": "main",
+        "ref": "26.05",
         "rev": "ec523f4f057fef04032aca2130af7c854f00f7cf",
         "revCount": 851,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
       "original": {
-        "ref": "main",
+        "ref": "26.05",
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       }
@@ -229,7 +214,6 @@
       "inputs": {
         "kapack": "kapack",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master",
         "nxc": "nxc"
       }
     },
